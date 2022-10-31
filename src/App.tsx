@@ -89,7 +89,7 @@ const Holo = ({
       y: percent.y - 50,
     };
 
-    backgroundApi.start({
+    backgroundApi.set({
       x: round(50 + percent.x / 4 - 12.5),
       y: round(50 + percent.y / 3 - 16.67),
     });
@@ -100,7 +100,7 @@ const Holo = ({
       s: 1.1,
     });
 
-    glareApi.start({
+    glareApi.set({
       x: percent.x,
       y: percent.y,
       o: 1,
@@ -114,8 +114,8 @@ const Holo = ({
       s: 1,
     });
 
-    glareApi.start({ x: 50, y: 50, o: 0 });
-    backgroundApi.start({ x: 50, y: 50 });
+    glareApi.set({ x: 50, y: 50, o: 0 });
+    backgroundApi.set({ x: 50, y: 50 });
   };
 
   return (
