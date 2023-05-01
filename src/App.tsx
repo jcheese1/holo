@@ -1,11 +1,15 @@
 import Smol from "./assets/smol.png";
 import { MouseEvent } from "react";
-import { useSpring, animated as a, to } from "@react-spring/web";
+import {
+  motion,
+  useTransform,
+  useSpring as useFramerSpring,
+} from "framer-motion";
 
 export default function App() {
   return (
     <div className="App">
-      <Holo alt="Smol" perspective={false} />
+      <HoloFramer alt="Smol" perspective />
     </div>
   );
 }
@@ -21,38 +25,24 @@ const springR = {
 
 const round = (num: number, fix = 3) => parseFloat(num.toFixed(fix));
 
-const Holo = ({ alt, perspective }: { alt: string; perspective: boolean }) => {
-  const [rotate, rotateApi] = useSpring(
-    () => ({
-      x: 0,
-      y: 0,
-      s: 1,
-      config: springR,
-    }),
-    [springR]
-  );
-  const [glare, glareApi] = useSpring(
-    () => ({
-      x: 50,
-      y: 50,
-      o: 0,
-      config: springR,
-    }),
-    [springR]
-  );
-  const [background, backgroundApi] = useSpring(
-    () => ({
-      x: 50,
-      y: 50,
-      config: springR,
-    }),
-    [springR]
-  );
+const HoloFramer = ({
+  alt,
+  perspective,
+}: {
+  alt: string;
+  perspective: boolean;
+}) => {
+  const rotationX = useFramerSpring(0);
+  const rotationY = useFramerSpring(0);
+  const scale = useFramerSpring(1);
+  const glareX = useFramerSpring(50);
+  const glareY = useFramerSpring(50);
+  const glareO = useFramerSpring(0);
+  const backgroundX = useFramerSpring(50);
+  const backgroundY = useFramerSpring(50);
 
-  const handleMouse = (
-    e: MouseEvent<HTMLDivElement, globalThis.MouseEvent>
-  ) => {
-    const element = e.target as HTMLElement;
+  const handleMouse = (e: MouseEvent) => {
+    const element = e.currentTarget;
 
     const rect = element.getBoundingClientRect();
 
@@ -70,68 +60,73 @@ const Holo = ({ alt, perspective }: { alt: string; perspective: boolean }) => {
       y: percent.y - 50,
     };
 
-    backgroundApi.start({
-      x: round(50 + percent.x / 4 - 12.5),
-      y: round(50 + percent.y / 3 - 16.67),
-    });
+    backgroundX.set(round(50 + percent.x / 4 - 12.5));
+    backgroundY.set(round(50 + percent.y / 3 - 16.67));
 
-    rotateApi.start({
-      x: round(-(center.x / 3.5)),
-      y: round(center.y / 2),
-      s: 1.03,
-    });
+    rotationX.set(round(-(center.x / 3.5)));
+    rotationY.set(round(center.y / 2));
+    scale.set(1.03);
 
-    glareApi.start({
-      x: percent.x,
-      y: percent.y,
-      o: 1,
-    });
+    glareX.set(percent.x);
+    glareY.set(percent.y);
+    glareO.set(1);
   };
 
   const handleMouseOut = () => {
-    rotateApi.start({
-      x: 0,
-      y: 0,
-      s: 1,
-    });
+    rotationX.set(0);
+    rotationY.set(0);
+    scale.set(1);
 
-    glareApi.start({ x: 50, y: 50, o: 0 });
-    backgroundApi.start({ x: 50, y: 50 });
+    glareX.set(50);
+    glareY.set(50);
+    glareO.set(0);
+
+    backgroundX.set(50);
+    backgroundY.set(50);
   };
 
-  const filter = to([glare.x, glare.y], (x, y) => {
+  const filter = useTransform([glareX, glareY], ([x, y]) => {
     const hyp =
-      (Math.sqrt((y - 50) * (y - 50) + (x - 50) * (x - 50)) / 50) * 0.3 + 0.5;
+      (Math.sqrt(
+        ((y as number) - 50) * ((y as number) - 50) +
+          ((x as number) - 50) * ((x as number) - 50)
+      ) /
+        50) *
+        0.3 +
+      0.5;
     return `brightness(${hyp}) contrast(2) saturate(1.5)`;
   });
 
   return (
-    <a.div className="wrapper">
+    <motion.div className="wrapper">
       <div className="card">
-        <a.div
+        <motion.div
           className="cardFront"
+          transition={springR}
           onMouseMove={handleMouse}
           onMouseOut={handleMouseOut}
           style={{
-            transform: to([rotate.x, rotate.y, rotate.s], (x, y, s) =>
-              perspective
-                ? `perspective(600px) rotateX(${x}deg) rotateY(${y}deg) scale(${s})`
-                : `scale(${s})`
+            transform: useTransform(
+              [rotationX, rotationY, scale],
+              ([x, y, s]) =>
+                perspective
+                  ? `perspective(600px) rotateX(${x}deg) rotateY(${y}deg) scale(${s})`
+                  : `scale(${s})`
             ),
           }}
         >
           <img src={Smol} alt={alt} />
-          <a.div
+          <motion.div
             style={{
-              opacity: glare.o.to((o) => o),
-              backgroundPosition: to(
-                [background.x, background.y],
-                (x, y) => `center, 0% ${y}%, ${x}% ${y}%,
+              opacity: useTransform(glareO, (o) => o),
+              backgroundPosition: useTransform(
+                [backgroundX, backgroundY],
+                ([x, y]) => `center, 0% ${y}%, ${x}% ${y}%,
               ${x}% ${y}%`
               ),
-              backgroundImage: to(
-                [glare.x, glare.y],
-                (x, y) => `url("/pattern.png"),
+              backgroundImage: useTransform(
+                [glareX, glareY],
+                ([x, y]) => `url("/pattern.png"),
             repeating-linear-gradient(
               0deg,
               rgb(255, 119, 115) calc(var(--space) * 1),
@@ -162,9 +157,9 @@ const Holo = ({ alt, perspective }: { alt: string; perspective: boolean }) => {
               WebkitFilter: filter,
             }}
             className="cardShine"
-          ></a.div>
-        </a.div>
+          ></motion.div>
+        </motion.div>
       </div>
-    </a.div>
+    </motion.div>
   );
 };
