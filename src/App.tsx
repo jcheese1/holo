@@ -5,6 +5,9 @@ import {
   useTransform,
   useSpring as useFramerSpring,
 } from "framer-motion";
+import { useControls } from "leva";
+import { pluginFile } from "./plugin";
+import React from "react";
 
 export default function App() {
   return (
@@ -32,6 +35,17 @@ const HoloFramer = ({
   alt: string;
   perspective: boolean;
 }) => {
+  const [file, setFile] = React.useState<string | null>(null);
+
+  useControls({
+    Texture: pluginFile({
+      onChange: (file) => {
+        if (!file) return;
+        setFile(URL.createObjectURL(file));
+      },
+    }),
+  });
+
   const rotationX = useFramerSpring(0);
   const rotationY = useFramerSpring(0);
   const scale = useFramerSpring(1);
@@ -126,7 +140,7 @@ const HoloFramer = ({
               ),
               backgroundImage: useTransform(
                 [glareX, glareY],
-                ([x, y]) => `url("/pattern.png"),
+                ([x, y]) => `url(${file ? file : "/pattern.png"}),
             repeating-linear-gradient(
               0deg,
               rgb(255, 119, 115) calc(var(--space) * 1),

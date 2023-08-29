@@ -1,3 +1,9 @@
+:root {
+  --imgsize: 100%;
+  --angle: 133deg;
+  --space: 5%;
+}
+
 html {
   background-color: gray;
 }
@@ -11,7 +17,6 @@ html {
 
 .card {
   --radius: 4.55% / 3.5%;
-  --space: 5%;
   transform: translateZ(0.1px);
   will-change: transform, visibility;
   transform-style: preserve-3d;
@@ -41,8 +46,6 @@ html {
 }
 
 .cardShine {
-  --angle: 133deg;
-  --imgsize: 100%;
   width: 400px;
   aspect-ratio: 0.714;
   border-radius: var(--radius);
@@ -56,9 +59,6 @@ html {
 .cardShine::after {
   content: " ";
   visibility: visible;
-  --space: 5%;
-  --angle: 133deg;
-  --imgsize: 100%;
   width: 400px;
   aspect-ratio: 0.714;
   mix-blend-mode: exclusion;
