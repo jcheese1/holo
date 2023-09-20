@@ -103,7 +103,8 @@ export function A() {
       >
         <div className="grid w-full h-full" ref={ref}>
           <motion.div
-            className="[grid-area:1/1] rounded-lg mix-blend-color-dodge aspect-[0.643] [background-blend-mode:hue,hue,hard-light,overlay] [background-size:100%,200%_700%,300%,200%] after:content-[''] after:visible after:w-full after:mix-blend-exclusion after:aspect-[0.643] after:[background-image:inherit] after:[background-blend-mode:soft-light,hue,hard-light] after:[background-size:100%,200%_400%,195%,200%] after:[grid-area:1/1] after:grid"
+            // [-webkit-mask-image:radial-gradient(white,black)] is for safari. Safari is not hiding overflow on divs with round corners on hover :S
+            className="[grid-area:1/1] [-webkit-mask-image:radial-gradient(white,black)] rounded-lg mix-blend-color-dodge aspect-[0.643] [background-blend-mode:hue,hue,hard-light,overlay] [background-size:100%,200%_700%,300%,200%] after:content-[''] after:visible after:w-full after:mix-blend-exclusion after:aspect-[0.643] after:[background-image:inherit] after:[background-blend-mode:soft-light,hue,hard-light] after:[background-size:100%,200%_400%,195%,200%] after:[grid-area:1/1] after:grid"
             style={{
               opacity: glare0,
               backgroundPosition: bg,
@@ -275,12 +276,6 @@ radial-gradient(
   rgba(0, 0, 0, 0.25) 120%
 )`
   );
-
-  useMotionValueEvent(glareX, "change", (glareX) => console.log({ glareX }));
-  useMotionValueEvent(glareY, "change", (glareY) => console.log({ glareY }));
-  useMotionValueEvent(bg, "change", (bg) => console.log({ bg }));
-  useMotionValueEvent(filter, "change", (filter) => console.log({ filter }));
-  useMotionValueEvent(bgImage, "change", (bgImage) => console.log({ bgImage }));
 
   return (
     <motion.div>
