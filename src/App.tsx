@@ -13,40 +13,14 @@ import "atropos/css";
 import Atropos from "atropos/react";
 import DefaultImage from "./assets/block.png";
 import { interpolate } from "popmotion";
+import useLocalStorage from "use-local-storage";
 
-const colors = {
-  color1: { r: 255, g: 119, b: 115, a: 1 },
-  color2: { r: 255, g: 237, b: 95, a: 1 },
-  color3: { r: 168, g: 255, b: 95, a: 1 },
-  color4: { r: 131, g: 255, b: 247, a: 1 },
-  color5: { r: 120, g: 148, b: 255, a: 1 },
-  color6: { r: 216, g: 117, b: 255, a: 1 },
-  color7: { r: 255, g: 119, b: 115, a: 1 },
-} as const;
-
-const underlyingColors = {
-  color8: {
-    r: 143,
-    g: 163,
-    b: 163,
-    a: 1,
-  },
-  color9: {
-    r: 143,
-    g: 193,
-    b: 193,
-    a: 1,
-  },
-  color10: {
-    r: 143,
-    g: 163,
-    b: 163,
-    a: 1,
-  },
-} as const;
-
-const convertColorToString = (color: any) =>
-  `rgba(${color.r}, ${color.g}, ${color.b}, ${color.a})`;
+const convertColorToString = (color: {
+  r: number;
+  g: number;
+  b: number;
+  a: number;
+}) => `rgba(${color.r}, ${color.g}, ${color.b}, ${color.a})`;
 
 export function A() {
   const glareX = useFramerSpring(50);
@@ -58,22 +32,56 @@ export function A() {
   const ref = React.useRef<HTMLDivElement>(null);
   const [file, setFile] = React.useState<string | null>(null);
   const [img, setImg] = React.useState<string | null>(null);
-  const {
-    highlight,
-    popoutOffset,
-    color1,
-    color2,
-    color3,
-    color4,
-    color5,
-    color6,
-    color7,
-    color8,
-    color9,
-    color10,
-  } = useControls({
-    highlight: true,
-    popoutOffset: 5,
+  const [data, setData] = useLocalStorage(
+    "data",
+    {
+      highlight: true,
+      popoutOffset: 5,
+      color1: { r: 255, g: 119, b: 115, a: 1 },
+      color2: { r: 255, g: 237, b: 95, a: 1 },
+      color3: { r: 168, g: 255, b: 95, a: 1 },
+      color4: { r: 131, g: 255, b: 247, a: 1 },
+      color5: { r: 120, g: 148, b: 255, a: 1 },
+      color6: { r: 216, g: 117, b: 255, a: 1 },
+      color7: { r: 255, g: 119, b: 115, a: 1 },
+      color8: { r: 143, g: 163, b: 163, a: 1 },
+      color9: { r: 143, g: 193, b: 193, a: 1 },
+      color10: { r: 143, g: 163, b: 163, a: 1 },
+    },
+    {
+      serializer: (obj) => JSON.stringify(obj),
+      parser: (str) => JSON.parse(str),
+      syncData: false,
+    }
+  );
+
+  const [
+    {
+      highlight,
+      popoutOffset,
+      color1,
+      color2,
+      color3,
+      color4,
+      color5,
+      color6,
+      color7,
+      color8,
+      color9,
+      color10,
+    },
+    set,
+  ] = useControls(() => ({
+    highlight: {
+      value: true,
+      onChange: (v) => onChange("highlight", v),
+      transient: false,
+    },
+    popoutOffset: {
+      value: 5,
+      onChange: (v) => onChange("popoutOffset", v),
+      transient: false,
+    },
     texture: pluginFile({
       onChange: (file) => {
         if (!file) return;
@@ -86,9 +94,101 @@ export function A() {
         setImg(URL.createObjectURL(file));
       },
     }),
-    ...colors,
-    underlyingColor: folder(underlyingColors),
-  });
+    color1: {
+      value: { r: 255, g: 119, b: 115, a: 1 },
+      onChange: (v: any) => onChange("color1", v),
+      transient: false,
+    },
+    color2: {
+      value: { r: 255, g: 237, b: 95, a: 1 },
+      onChange: (v: any) => onChange("color2", v),
+      transient: false,
+    },
+    color3: {
+      value: { r: 168, g: 255, b: 95, a: 1 },
+      onChange: (v: any) => onChange("color3", v),
+      transient: false,
+    },
+    color4: {
+      value: { r: 131, g: 255, b: 247, a: 1 },
+      onChange: (v: any) => onChange("color4", v),
+      transient: false,
+    },
+    color5: {
+      value: { r: 120, g: 148, b: 255, a: 1 },
+      onChange: (v: any) => onChange("color5", v),
+      transient: false,
+    },
+    color6: {
+      value: { r: 216, g: 117, b: 255, a: 1 },
+      onChange: (v: any) => onChange("color6", v),
+      transient: false,
+    },
+    color7: {
+      value: { r: 255, g: 119, b: 115, a: 1 },
+      onChange: (v: any) => onChange("color7", v),
+      transient: false,
+    },
+    underlyingColor: folder({
+      color8: {
+        value: {
+          r: 143,
+          g: 163,
+          b: 163,
+          a: 1,
+        },
+        onChange: (v: any) => onChange("color8", v),
+        transient: false,
+      },
+      color9: {
+        value: {
+          r: 143,
+          g: 193,
+          b: 193,
+          a: 1,
+        },
+        onChange: (v: any) => onChange("color9", v),
+        transient: false,
+      },
+      color10: {
+        value: {
+          r: 143,
+          g: 163,
+          b: 163,
+          a: 1,
+        },
+        onChange: (v: any) => onChange("color10", v),
+        transient: false,
+      },
+    }),
+  }));
+
+  const onChange = (name: string, v: any) => {
+    // @ts-ignore
+    setData((d) => ({
+      ...d,
+      [name]: v,
+    }));
+  };
+
+  React.useEffect(() => {
+    if (!data) return;
+
+    set({
+      highlight: data.highlight,
+      popoutOffset: data.popoutOffset,
+      color1: data.color1,
+      color2: data.color2,
+      color3: data.color3,
+      color4: data.color4,
+      color5: data.color5,
+      color6: data.color6,
+      color7: data.color7,
+      color8: data.color8,
+      color9: data.color9,
+      color10: data.color10,
+    });
+  }, [data]);
 
   const bg = useTransform(
     [backgroundX, backgroundY],
