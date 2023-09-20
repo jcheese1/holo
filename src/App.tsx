@@ -67,6 +67,9 @@ export function A() {
       color8,
       color9,
       color10,
+      title,
+      name,
+      description,
     },
     set,
   ] = useControls(() => ({
@@ -159,6 +162,17 @@ export function A() {
         transient: false,
       },
     }),
+    others: folder(
+      {
+        title: "Badges | Name",
+        name: "Badge Name",
+        description:
+          "Awarded to all unique wallets that either listed or purchased on Trove during the first two weeks of launch (June 13 2022 - June 27th 2022).",
+      },
+      {
+        collapsed: true,
+      }
+    ),
     reset: button(() => setData(INITIAL_DATA)),
   }));
 
@@ -267,17 +281,9 @@ export function A() {
               />
             </div>
             <div className="bg-[#19253A] p-3.5 flex flex-col overflow-auto pb-10">
-              <h2 className="text-sm font-bold text-[#9FA3A9]">
-                Badges | Name
-              </h2>
-              <h3 className="text-lg font-bold text-[#E7E8E9] mt-1">
-                Badge Name
-              </h3>
-              <p className="text-[#9FA3A9] text-xs my-4">
-                Awarded to all unique wallets that either listed or purchased on
-                Trove during the first two weeks of launch (June 13 2022 - June
-                27th 2022).
-              </p>
+              <h2 className="text-sm font-bold text-[#9FA3A9]">{title}</h2>
+              <h3 className="text-lg font-bold text-[#E7E8E9] mt-1">{name}</h3>
+              <p className="text-[#9FA3A9] text-xs my-4">{description}</p>
               <p className="text-[#70747D] text-xs mt-auto">
                 5 players have this badge
               </p>
