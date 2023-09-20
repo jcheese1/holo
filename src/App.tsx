@@ -47,7 +47,7 @@ export function A() {
   const ref = React.useRef<HTMLDivElement>(null);
   const [file, setFile] = React.useState<string | null>(null);
   const [img, setImg] = React.useState<string | null>(null);
-  const [data, setData] = useLocalStorage("data", INITIAL_DATA, {
+  const [data, setData] = useLocalStorage("holo:guidata", INITIAL_DATA, {
     serializer: (obj) => JSON.stringify(obj),
     parser: (str) => JSON.parse(str),
     syncData: false,
