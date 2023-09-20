@@ -6,7 +6,7 @@ import {
   useSpring as useFramerSpring,
   useMotionValueEvent,
 } from "framer-motion";
-import { folder, useControls } from "leva";
+import { button, folder, useControls } from "leva";
 import { pluginFile } from "./plugin";
 import React from "react";
 import "atropos/css";
@@ -22,6 +22,21 @@ const convertColorToString = (color: {
   a: number;
 }) => `rgba(${color.r}, ${color.g}, ${color.b}, ${color.a})`;
 
+const INITIAL_DATA = {
+  highlight: true,
+  popoutOffset: 5,
+  color1: { r: 255, g: 119, b: 115, a: 1 },
+  color2: { r: 255, g: 237, b: 95, a: 1 },
+  color3: { r: 168, g: 255, b: 95, a: 1 },
+  color4: { r: 131, g: 255, b: 247, a: 1 },
+  color5: { r: 120, g: 148, b: 255, a: 1 },
+  color6: { r: 216, g: 117, b: 255, a: 1 },
+  color7: { r: 255, g: 119, b: 115, a: 1 },
+  color8: { r: 143, g: 163, b: 163, a: 1 },
+  color9: { r: 143, g: 193, b: 193, a: 1 },
+  color10: { r: 143, g: 163, b: 163, a: 1 },
+};
+
 export function A() {
   const glareX = useFramerSpring(50);
   const glareY = useFramerSpring(50);
@@ -32,28 +47,11 @@ export function A() {
   const ref = React.useRef<HTMLDivElement>(null);
   const [file, setFile] = React.useState<string | null>(null);
   const [img, setImg] = React.useState<string | null>(null);
-  const [data, setData] = useLocalStorage(
-    "data",
-    {
-      highlight: true,
-      popoutOffset: 5,
-      color1: { r: 255, g: 119, b: 115, a: 1 },
-      color2: { r: 255, g: 237, b: 95, a: 1 },
-      color3: { r: 168, g: 255, b: 95, a: 1 },
-      color4: { r: 131, g: 255, b: 247, a: 1 },
-      color5: { r: 120, g: 148, b: 255, a: 1 },
-      color6: { r: 216, g: 117, b: 255, a: 1 },
-      color7: { r: 255, g: 119, b: 115, a: 1 },
-      color8: { r: 143, g: 163, b: 163, a: 1 },
-      color9: { r: 143, g: 193, b: 193, a: 1 },
-      color10: { r: 143, g: 163, b: 163, a: 1 },
-    },
-    {
-      serializer: (obj) => JSON.stringify(obj),
-      parser: (str) => JSON.parse(str),
-      syncData: false,
-    }
-  );
+  const [data, setData] = useLocalStorage("data", INITIAL_DATA, {
+    serializer: (obj) => JSON.stringify(obj),
+    parser: (str) => JSON.parse(str),
+    syncData: false,
+  });
 
   const [
     {
@@ -161,6 +159,7 @@ export function A() {
         transient: false,
       },
     }),
+    reset: button(() => setData(INITIAL_DATA)),
   }));
 
   const onChange = (name: string, v: any) => {
