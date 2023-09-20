@@ -60,6 +60,7 @@ export function A() {
 
   const {
     highlight,
+    popoutOffset,
     color1,
     color2,
     color3,
@@ -72,6 +73,7 @@ export function A() {
     color10,
   } = useControls({
     highlight: true,
+    popoutOffset: 5,
     Texture: pluginFile({
       onChange: (file) => {
         if (!file) return;
@@ -152,7 +154,12 @@ export function A() {
         <div className="grid w-full h-full relative" ref={ref}>
           <div className="grid grid-rows-[1fr,250px]">
             <div className="h-64 grid items-center justify-center">
-              <img src={Img} alt="Forest" className="[grid-area:1/1] w-full" />
+              <img
+                src={Img}
+                alt="Forest"
+                className="[grid-area:1/1] w-full"
+                data-atropos-offset={String(popoutOffset)}
+              />
             </div>
             <div className="bg-[#19253A] p-3.5 overflow-auto">
               <h2 className="text-sm font-bold text-[#9FA3A9]">
