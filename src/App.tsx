@@ -161,7 +161,7 @@ export function A() {
                 data-atropos-offset={String(popoutOffset)}
               />
             </div>
-            <div className="bg-[#19253A] p-3.5 overflow-auto">
+            <div className="bg-[#19253A] p-3.5 overflow-auto pb-10">
               <h2 className="text-sm font-bold text-[#9FA3A9]">
                 Badges | Name
               </h2>
