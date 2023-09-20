@@ -11,7 +11,7 @@ import { pluginFile } from "./plugin";
 import React from "react";
 import "atropos/css";
 import Atropos from "atropos/react";
-import Img from "./assets/block.png";
+import DefaultImage from "./assets/block.png";
 import { interpolate } from "popmotion";
 
 const colors = {
@@ -57,7 +57,7 @@ export function A() {
   const glare0 = useFramerSpring(0);
   const ref = React.useRef<HTMLDivElement>(null);
   const [file, setFile] = React.useState<string | null>(null);
-
+  const [img, setImg] = React.useState<string | null>(null);
   const {
     highlight,
     popoutOffset,
@@ -74,10 +74,16 @@ export function A() {
   } = useControls({
     highlight: true,
     popoutOffset: 5,
-    Texture: pluginFile({
+    texture: pluginFile({
       onChange: (file) => {
         if (!file) return;
         setFile(URL.createObjectURL(file));
+      },
+    }),
+    image: pluginFile({
+      onChange: (file) => {
+        if (!file) return;
+        setImg(URL.createObjectURL(file));
       },
     }),
     ...colors,
@@ -155,9 +161,9 @@ export function A() {
           <div className="grid grid-rows-[1fr,250px]">
             <div className="h-64 grid items-center justify-center">
               <img
-                src={Img}
+                src={img ? img : DefaultImage}
                 alt="Forest"
-                className="[grid-area:1/1] w-full"
+                className="aspect-square w-48 h-auto"
                 data-atropos-offset={String(popoutOffset)}
               />
             </div>
