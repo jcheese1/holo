@@ -1,3 +1,7 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 :root {
   --imgsize: 100%;
   --angle: 133deg;
@@ -51,7 +55,7 @@ html {
   border-radius: var(--radius);
   mix-blend-mode: color-dodge;
   background-blend-mode: hue, hue, hard-light, overlay;
-  background-size: var(--imgsize), 200% 700%, 300%, 200%;
+  background-size: 100%, 200% 700%, 300%, 200%;
   display: grid;
   grid-area: 1/1;
 }
@@ -64,7 +68,7 @@ html {
   mix-blend-mode: exclusion;
   background-image: inherit;
   background-blend-mode: soft-light, hue, hard-light;
-  background-size: var(--imgsize), 200% 400%, 195%, 200%;
+  background-size: 100%, 200% 400%, 195%, 200%;
   display: grid;
   grid-area: 1/1;
 }
