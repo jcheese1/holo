@@ -24,7 +24,7 @@ const convertColorToString = (color: {
 
 const INITIAL_DATA = {
   highlight: true,
-  popoutOffset: 5,
+  popoutOffset: 10,
   color1: { r: 255, g: 119, b: 115, a: 1 },
   color2: { r: 255, g: 237, b: 95, a: 1 },
   color3: { r: 168, g: 255, b: 95, a: 1 },
@@ -76,7 +76,7 @@ export function A() {
       transient: false,
     },
     popoutOffset: {
-      value: 5,
+      value: 10,
       onChange: (v) => onChange("popoutOffset", v),
       transient: false,
     },
