@@ -6,13 +6,47 @@ import {
   useSpring as useFramerSpring,
   useMotionValueEvent,
 } from "framer-motion";
-import { useControls } from "leva";
+import { folder, useControls } from "leva";
 import { pluginFile } from "./plugin";
 import React from "react";
 import "atropos/css";
 import Atropos from "atropos/react";
 import Img from "./assets/block.png";
 import { interpolate } from "popmotion";
+
+const colors = {
+  color1: { r: 255, g: 119, b: 115, a: 1 },
+  color2: { r: 255, g: 237, b: 95, a: 1 },
+  color3: { r: 168, g: 255, b: 95, a: 1 },
+  color4: { r: 131, g: 255, b: 247, a: 1 },
+  color5: { r: 120, g: 148, b: 255, a: 1 },
+  color6: { r: 216, g: 117, b: 255, a: 1 },
+  color7: { r: 255, g: 119, b: 115, a: 1 },
+} as const;
+
+const underlyingColors = {
+  color8: {
+    r: 143,
+    g: 163,
+    b: 163,
+    a: 1,
+  },
+  color9: {
+    r: 143,
+    g: 193,
+    b: 193,
+    a: 1,
+  },
+  color10: {
+    r: 143,
+    g: 163,
+    b: 163,
+    a: 1,
+  },
+} as const;
+
+const convertColorToString = (color: any) =>
+  `rgba(${color.r}, ${color.g}, ${color.b}, ${color.a})`;
 
 export function A() {
   const glareX = useFramerSpring(50);
@@ -24,7 +58,19 @@ export function A() {
   const ref = React.useRef<HTMLDivElement>(null);
   const [file, setFile] = React.useState<string | null>(null);
 
-  const { highlight } = useControls({
+  const {
+    highlight,
+    color1,
+    color2,
+    color3,
+    color4,
+    color5,
+    color6,
+    color7,
+    color8,
+    color9,
+    color10,
+  } = useControls({
     highlight: true,
     Texture: pluginFile({
       onChange: (file) => {
@@ -32,6 +78,8 @@ export function A() {
         setFile(URL.createObjectURL(file));
       },
     }),
+    ...colors,
+    underlyingColor: folder(underlyingColors),
   });
 
   const bg = useTransform(
@@ -57,20 +105,20 @@ export function A() {
     ([x, y]) => `url(${file ? file : "/pattern.png"}),
       repeating-linear-gradient(
       0deg,
-      rgb(255, 119, 115) calc(5% * 1),
-      rgba(255, 237, 95, 1) calc(5% * 2),
-      rgba(168, 255, 95, 1) calc(5% * 3),
-      rgba(131, 255, 247, 1) calc(5% * 4),
-      rgba(120, 148, 255, 1) calc(5% * 5),
-      rgb(216, 117, 255) calc(5% * 6),
-      rgb(255, 119, 115) calc(5% * 7)
+      ${convertColorToString(color1)} calc(5% * 1),
+      ${convertColorToString(color2)} calc(5% * 2),
+      ${convertColorToString(color3)} calc(5% * 3),
+      ${convertColorToString(color4)} calc(5% * 4),
+      ${convertColorToString(color5)} calc(5% * 5),
+      ${convertColorToString(color6)} calc(5% * 6),
+      ${convertColorToString(color7)} calc(5% * 7)
       ),
       repeating-linear-gradient(
       133deg,
       #0e152e 0%,
-      hsl(180, 10%, 60%) 3.8%,
-      hsl(180, 29%, 66%) 4.5%,
-      hsl(180, 10%, 60%) 5.2%,
+      ${convertColorToString(color8)} 3.8%,
+      ${convertColorToString(color9)} 4.5%,
+      ${convertColorToString(color10)} 5.2%,
       #0e152e 10%,
       #0e152e 12%
       ),
