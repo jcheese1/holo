@@ -167,7 +167,7 @@ export function A() {
                 data-atropos-offset={String(popoutOffset)}
               />
             </div>
-            <div className="bg-[#19253A] p-3.5 overflow-auto pb-10">
+            <div className="bg-[#19253A] p-3.5 flex flex-col overflow-auto pb-10">
               <h2 className="text-sm font-bold text-[#9FA3A9]">
                 Badges | Name
               </h2>
@@ -177,13 +177,9 @@ export function A() {
               <p className="text-[#9FA3A9] text-xs my-4">
                 Awarded to all unique wallets that either listed or purchased on
                 Trove during the first two weeks of launch (June 13 2022 - June
-                27th 2022). Awarded to all unique wallets that either listed or
-                purchased on Trove during the first two weeks of launch (June 13
-                2022 - June 27th 2022). Awarded to all unique wallets that
-                either listed or purchased on Trove during the first two weeks
-                of launch (June 13 2022 - June 27th 2022).
+                27th 2022).
               </p>
-              <p className="text-[#70747D] text-xs">
+              <p className="text-[#70747D] text-xs mt-auto">
                 5 players have this badge
               </p>
             </div>
