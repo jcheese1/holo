@@ -146,27 +146,15 @@ export function A() {
           glareY.set(iy);
         }}
         highlight={highlight}
-        className="w-72 h-auto"
+        className="w-72 h-[30rem]"
         innerClassName="rounded-lg bg-[#101827]"
       >
-        <div className="grid w-full h-full" ref={ref}>
-          <motion.div
-            // [-webkit-mask-image:radial-gradient(white,black)] is for safari. Safari is not hiding overflow on divs with round corners on hover :S
-            className="[grid-area:1/1] [-webkit-mask-image:radial-gradient(white,black)] rounded-lg mix-blend-color-dodge aspect-[0.643] [background-blend-mode:hue,hue,hard-light,overlay] [background-size:100%,200%_700%,300%,200%] after:content-[''] after:visible after:w-full after:mix-blend-exclusion after:aspect-[0.643] after:[background-image:inherit] after:[background-blend-mode:soft-light,hue,hard-light] after:[background-size:100%,200%_400%,195%,200%] after:[grid-area:1/1] after:grid"
-            style={{
-              opacity: glare0,
-              backgroundPosition: bg,
-              backgroundImage: bgImage,
-              filter: filter,
-              WebkitFilter: filter,
-              transform: "translate3d(0, 0, 0)",
-            }}
-          ></motion.div>
-          <div className="[grid-area:1/1] flex flex-col">
+        <div className="grid w-full h-full relative" ref={ref}>
+          <div className="grid grid-rows-[1fr,250px]">
             <div className="h-64 grid items-center justify-center">
               <img src={Img} alt="Forest" className="[grid-area:1/1] w-full" />
             </div>
-            <div className="flex-1 bg-[#19253A] p-3.5">
+            <div className="bg-[#19253A] p-3.5 overflow-auto">
               <h2 className="text-sm font-bold text-[#9FA3A9]">
                 Badges | Name
               </h2>
@@ -176,13 +164,29 @@ export function A() {
               <p className="text-[#9FA3A9] text-xs my-4">
                 Awarded to all unique wallets that either listed or purchased on
                 Trove during the first two weeks of launch (June 13 2022 - June
-                27th 2022).
+                27th 2022). Awarded to all unique wallets that either listed or
+                purchased on Trove during the first two weeks of launch (June 13
+                2022 - June 27th 2022). Awarded to all unique wallets that
+                either listed or purchased on Trove during the first two weeks
+                of launch (June 13 2022 - June 27th 2022).
               </p>
               <p className="text-[#70747D] text-xs">
                 5 players have this badge
               </p>
             </div>
           </div>
+          <motion.div
+            // [-webkit-mask-image:radial-gradient(white,black)] is for safari. Safari is not hiding overflow on divs with round corners on hover :S
+            className="absolute pointer-events-none inset-0 [-webkit-mask-image:radial-gradient(white,black)] rounded-lg mix-blend-color-dodge aspect-[0.601] [background-blend-mode:hue,hue,hard-light,overlay] [background-size:100%,200%_700%,300%,200%] after:content-[''] after:visible after:w-full after:mix-blend-exclusion after:aspect-[0.601] after:[background-image:inherit] after:[background-blend-mode:soft-light,hue,hard-light] after:[background-size:100%,200%_400%,195%,200%] after:[grid-area:1/1] after:grid"
+            style={{
+              opacity: glare0,
+              backgroundPosition: bg,
+              backgroundImage: bgImage,
+              filter: filter,
+              WebkitFilter: filter,
+              transform: "translate3d(0, 0, 0)",
+            }}
+          ></motion.div>
         </div>
       </Atropos>
     </div>
