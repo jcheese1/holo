@@ -10,7 +10,7 @@ import { button, folder, useControls } from "leva";
 import { pluginFile } from "./plugin";
 import React from "react";
 import "atropos/css";
-import Atropos from "atropos/react";
+import { AtroposForTesting } from "./Atropos";
 import DefaultImage from "./assets/block.png";
 import { interpolate } from "popmotion";
 import useLocalStorage from "use-local-storage";
@@ -70,6 +70,7 @@ export function A() {
       title,
       name,
       description,
+      autoRotate,
     },
     set,
   ] = useControls(() => ({
@@ -174,6 +175,7 @@ export function A() {
       }
     ),
     reset: button(() => setData(INITIAL_DATA)),
+    autoRotate: false,
   }));
 
   const onChange = (name: string, v: any) => {
@@ -251,11 +253,44 @@ export function A() {
     )`
   );
 
+  // If autoRotate true
+  const rotateX = useFramerSpring(0);
+  const rotateY = useFramerSpring(0);
+  React.useEffect(() => {
+    let r = 0;
+
+    if (!autoRotate) {
+      rotateX.set(0);
+      rotateY.set(0);
+      glare0.set(0);
+      glareX.set(50);
+      glareY.set(50);
+      backgroundX.set(50);
+      backgroundY.set(50);
+      return;
+    }
+    const id = setInterval(() => {
+      r += 0.05;
+      rotateX.set(Math.sin(r) * 25);
+      rotateY.set(Math.cos(r) * 25);
+      glare0.set(1);
+      glareX.set(55 + Math.sin(r) * 55);
+      glareY.set(55 + Math.cos(r) * 55);
+      backgroundX.set(20 + Math.sin(r) * 20);
+      backgroundY.set(20 + Math.cos(r) * 20);
+    }, 20);
+
+    return () => clearInterval(id);
+  }, [autoRotate]);
+
+  useMotionValueEvent(rotateX, "change", (v) => console.log({ v }));
+
   return (
     <div>
-      <Atropos
+      <AtroposForTesting
         activeOffset={40}
         shadowScale={1.05}
+        testMode={autoRotate}
         onEnter={() => glare0.set(1)}
         onLeave={() => glare0.set(0)}
         onRotate={(x, y) => {
@@ -269,6 +304,8 @@ export function A() {
         highlight={highlight}
         className="w-72 h-[30rem]"
         innerClassName="rounded-lg bg-[#101827]"
+        rotateX={rotateX}
+        rotateY={rotateY}
       >
         <div className="grid w-full h-full relative" ref={ref}>
           <div className="grid grid-rows-[1fr,250px]">
@@ -302,7 +339,7 @@ export function A() {
             }}
           ></motion.div>
         </div>
-      </Atropos>
+      </AtroposForTesting>
     </div>
   );
 }
